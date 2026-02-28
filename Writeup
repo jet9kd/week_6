@@ -1,65 +1,47 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "id": "851785ab",
-   "metadata": {},
-   "source": [
-    "## Cluster Lab: Write up\n",
-    "\n",
-    "### Defining Our Goal\n",
-    "The goal, as VP of Analytics, would be to help the head scout, Mr. Rooney find the players that are high performing but not highly paid. By doing so, we would be helping him assemble a much better team to get to the playoffs.\n",
-    "\n",
-    "With this goal in mind, we assess what we are looking for. We are estimating based on performance if players are under or overpaid. This is achievable through Data Science, the method here will be clustering. We use clustering to group based on performance to explore the data. Salary is the variable we are trying to understand!\n",
-    "\n",
-    "However, to truly help Mr. Rooney, we would then need to sort into categories and define the cutoffs, so that we can provide accurate suggestions for him to take.\n",
-    "\n",
-    "### Data Set-up\n",
-    "To begin, we read in our data, which means to essentially put it on the table so we can start working with it. However, we’re looking at both performance and salary, so we have to merge them to better assess. We also take the time to clean it up, dropping any unnecessary columns or duplicates. \n",
-    "\n",
-    "### Correlation\n",
-    "Once that has been done, we use a correlation matrix, which is a table that helps us look at the relationship between our merged data columns. Specifically, since we are trying to understand salary, we look at the columns with the highest correlation to salary. Salary is labelled as ‘2025-26.’ We have to think, which ones are closest to 1 on the salary row?\n",
-    "\n",
-    "Then, we can look at the top 5 of those, determining them as the features to assess further (avoiding salary itself, since that is redundant). We can see that we have free throws, free throws attempted, and so on. \n",
-    "\n",
-    "### Clustering algorithm\n",
-    "With features chosen, we then scale so that these features don’t overpower another. We use this scaled version in a kmeans model, where we can guess a proper number of clusters and fit the model. In this case, we began with 2 clusters. When we print the information in the model, we receive the cluster centers and labels. What this told us was that one cluster consistently underperformed and the other was above average (one had centers in the negatives, the other had centers above 1). We saw the labels (0s and 1s for the two clusters) which told us that they were properly sorted.\n",
-    "\n",
-    "![scatterplot](output.png)\n",
-    "\n",
-    "Then, we can see in this scatter plot the result. There are two distinct clusters, which is a good sign when sorting. However, we can check the quality further by using: \n",
-    "\n",
-    "Within-Cluster Sum of Squares (WCSS):  (minimize)\n",
-    "Total Sum of Squares (TSS) (maximize)\n",
-    "Variance = 1 - (WCSS/TSS) --> this should be closest to 1\n",
-    "\n",
-    "Using 2 clusters, we receive:\n",
-    "Total variance explained: 0.6508807398504552\n",
-    "Silhouette score: 0.6142812030046548\n",
-    "\n",
-    "### Elbow plot\n",
-    "However, we plotted an elbow plot and silhouette coefficient to help us choose a more optimal choice. We want one where the elbow plot decreases the most and one where silhouette coefficient is the highest. \n",
-    "\n",
-    "Total variance explained: 0.9366143166575667\n",
-    "Silhouette score: 0.5555049266205992\n",
-    "\n",
-    "So after switching to 3 clusters, we can see that total variance improved dramatically, much closer to 1. However, silhouette score dropped slightly. With the dramatic increase in variance, though, this still proves to be more optimal than k=2.\n",
-    "\n",
-    "![elbowplot](elbow.png)\n",
-    "\n",
-    "### Category and cut-offs\n",
-    "\n",
-    "Finally, we use a value score to determine where they are categorized. We are essentially looking at points in relation to salary, rather than raw points. And then we cutoff using percentiles, so that would be mean that the good ones are greater than 75% of the rest, and could work are better than 50%, and the bad is at the bottom less than these two. \n",
-    "\n",
-    "Finally, knowing these cutoffs, we can choose the top 4 from each category as examples so that Mr. Rooney understands what to look out for. "
-   ]
-  }
- ],
- "metadata": {
-  "language_info": {
-   "name": "python"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+## Cluster Lab: Write up
+
+### Defining Our Goal
+The goal, as VP of Analytics, would be to help the head scout, Mr. Rooney find the players that are high performing but not highly paid. By doing so, we would be helping him assemble a much better team to get to the playoffs.
+
+With this goal in mind, we assess what we are looking for. We are estimating based on performance if players are under or overpaid. This is achievable through Data Science, the method here will be clustering. We use clustering to group based on performance to explore the data. Salary is the variable we are trying to understand!
+
+However, to truly help Mr. Rooney, we would then need to sort into categories and define the cutoffs, so that we can provide accurate suggestions for him to take.
+
+### Data Set-up
+To begin, we read in our data, which means to essentially put it on the table so we can start working with it. However, we’re looking at both performance and salary, so we have to merge them to better assess. We also take the time to clean it up, dropping any unnecessary columns or duplicates. 
+
+### Correlation
+Once that has been done, we use a correlation matrix, which is a table that helps us look at the relationship between our merged data columns. Specifically, since we are trying to understand salary, we look at the columns with the highest correlation to salary. Salary is labelled as ‘2025-26.’ We have to think, which ones are closest to 1 on the salary row?
+
+Then, we can look at the top 5 of those, determining them as the features to assess further (avoiding salary itself, since that is redundant). We can see that we have free throws, free throws attempted, and so on. 
+
+### Clustering algorithm
+With features chosen, we then scale so that these features don’t overpower another. We use this scaled version in a kmeans model, where we can guess a proper number of clusters and fit the model. In this case, we began with 2 clusters. When we print the information in the model, we receive the cluster centers and labels. What this told us was that one cluster consistently underperformed and the other was above average (one had centers in the negatives, the other had centers above 1). We saw the labels (0s and 1s for the two clusters) which told us that they were properly sorted.
+
+![scatterplot](output.png)
+
+Then, we can see in this scatter plot the result. There are two distinct clusters, which is a good sign when sorting. However, we can check the quality further by using: 
+
+Within-Cluster Sum of Squares (WCSS):  (minimize)
+Total Sum of Squares (TSS) (maximize)
+Variance = 1 - (WCSS/TSS) --> this should be closest to 1
+
+Using 2 clusters, we receive:
+Total variance explained: 0.6508807398504552
+Silhouette score: 0.6142812030046548
+
+### Elbow plot
+However, we plotted an elbow plot and silhouette coefficient to help us choose a more optimal choice. We want one where the elbow plot decreases the most and one where silhouette coefficient is the highest. 
+
+Total variance explained: 0.9366143166575667
+Silhouette score: 0.5555049266205992
+
+So after switching to 3 clusters, we can see that total variance improved dramatically, much closer to 1. However, silhouette score dropped slightly. With the dramatic increase in variance, though, this still proves to be more optimal than k=2.
+
+![elbowplot](elbow.png)
+
+### Category and cut-offs
+
+Finally, we use a value score to determine where they are categorized. We are essentially looking at points in relation to salary, rather than raw points. And then we cutoff using percentiles, so that would be mean that the good ones are greater than 75% of the rest, and could work are better than 50%, and the bad is at the bottom less than these two. 
+
+Finally, knowing these cutoffs, we can choose the top 4 from each category as examples so that Mr. Rooney understands what to look out for. 
